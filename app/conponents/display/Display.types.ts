@@ -1,7 +1,7 @@
 interface Expense {
   id: number;
   date: string;
-  category: string;
+  selectedCategory: string;
   amount: number;
   note: string;
 };

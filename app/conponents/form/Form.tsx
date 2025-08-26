@@ -2,16 +2,23 @@
 
 import styles from "./Form.module.css";
 import React, { useState } from "react";
-import { Expense } from "../../types/type";
+import { Expense } from "../display/Display.types";
 import Category from "./Category";
+import { CategoryType } from "@/app/types";
 
-interface ListProps {
+interface FormProps extends CategoryType {
   expenses: Expense[];
   setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
-export default function Form({ expenses, setExpenses }: ListProps) {
-  const [category, setCategory] = useState("食費");
+export default function Form({
+  categories,
+  setCategories,
+  selectedCategory,
+  setSelectedCategory,
+  expenses,
+  setExpenses,
+}: FormProps) {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
 
@@ -23,20 +30,25 @@ export default function Form({ expenses, setExpenses }: ListProps) {
     const newExpense: Expense = {
       id: Date.now(),
       date: new Date().toLocaleString(),
-      category,
+      selectedCategory,
       amount: num,
       note,
     };
 
     setExpenses([...expenses, newExpense]);
-    setCategory("食費");
+    setSelectedCategory("食費");
     setAmount("");
     setNote("");
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2 mb-6">
-      <Category category={category} setCategory={setCategory} />
+      <Category
+        categories={categories}
+        setCategories={setCategories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
 
       <input
         type="text"

@@ -1,4 +1,4 @@
-@reference "../../globals.css"; /* Tailwindの参照を宣言 */
+@reference "../../globals.css";
 
 .inputCommon {
   @apply border rounded p-2 bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100;

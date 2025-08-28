@@ -4,7 +4,7 @@ import styles from "./Form.module.css";
 import React, { useState } from "react";
 import { Expense } from "../display/Display.types";
 import Category from "./Category";
-import { CategoryType } from "@/app/types";
+import { CategoryType } from "@/types";
 
 interface FormProps extends CategoryType {
   expenses: Expense[];

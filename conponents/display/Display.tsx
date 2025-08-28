@@ -5,7 +5,8 @@ import Form from "../form/Form";
 import { Expense } from "./Display.types";
 import List from "../list/List";
 import Setting from "../setting/Setting";
-import { CategoryType } from "@/app/types";
+import { CategoryType } from "@/types";
+import Link from "next/link";
 
 export default function Display() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -20,7 +21,7 @@ export default function Display() {
   const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   if (selectedCategory === "設定") {
-    return <Setting categories={categories} setCategories={setCategories} />;
+    return <Setting categories={categories} setCategories={setCategories} setSelectedCategory={setSelectedCategory} />;
   }
 
   return (
@@ -38,6 +39,8 @@ export default function Display() {
       <List expenses={expenses} />
 
       <p className="text-lg font-semibold">合計: {total}円</p>
+
+      <Link href="/list">管理画面へ</Link>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import Display from "../conponents/display/Display"
+import Display from "../components/display/Display"
 export default function Home() {
   return (
     <main className="max-w-lg mx-auto p-4">

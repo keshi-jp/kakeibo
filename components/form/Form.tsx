@@ -2,40 +2,47 @@
 
 import styles from "./Form.module.css";
 import React, { useState } from "react";
-import { Expense } from "../display/Display.types";
-import Category from "./Category";
+import Category from "./category/Category";
 import { CategoryType } from "@/types";
+import { useExpenseStore } from "@/stores/expenseStore";
+import { ExpenseType } from "../display/Display.types";
+import { useDateArrStore } from "@/stores/dateArrStore";
 
-interface FormProps extends CategoryType {
-  expenses: Expense[];
-  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
-}
+type FormProps = CategoryType;
 
 export default function Form({
   categories,
   setCategories,
   selectedCategory,
   setSelectedCategory,
-  expenses,
-  setExpenses,
 }: FormProps) {
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
+  const { addExpense } = useExpenseStore();
+  const { addDate } = useDateArrStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const num = Number(amount);
     if (num <= 0) return;
 
-    const newExpense: Expense = {
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString("ja-JP", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+
+    const newExpense: ExpenseType = {
       id: Date.now(),
-      date: new Date().toLocaleString(),
+      date: now.toLocaleString(),
       selectedCategory,
       amount: num,
       note,
     };
 
-    setExpenses([...expenses, newExpense]);
+    addExpense(newExpense, formattedDate);
+    addDate(formattedDate);
     setSelectedCategory("食費");
     setAmount("");
     setNote("");

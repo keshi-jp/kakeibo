@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryType } from "../../types";
+import { CategoryType } from "../../../types";
 
 export default function Category({
   categories,

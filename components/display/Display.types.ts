@@ -1,4 +1,4 @@
-interface Expense {
+interface ExpenseType {
   id: number;
   date: string;
   selectedCategory: string;
@@ -6,4 +6,4 @@ interface Expense {
   note: string;
 };
 
-export type { Expense };
+export type { ExpenseType };

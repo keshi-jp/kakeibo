@@ -17,11 +17,19 @@ export const useExpenseStore = create<ExpenseStore>((set) => ({
       const updatedByDate = {
         ...state.expensesByDate,
         [dateKey]: [...(state.expensesByDate[dateKey] || []), expense],
-      }
+      };
       return { expenses: updatedExpenses, expensesByDate: updatedByDate };
     });
   },
-
   removeExpense: (id) =>
-    set((state) => ({ expenses: state.expenses.filter((e) => e.id !== id) })),
+    set((state) => {
+      const updatedExpenses = state.expenses.filter((e) => e.id !== id);
+      const updatedByDate = Object.fromEntries(
+        Object.entries(state.expensesByDate).map(([date, expenses]) => [
+          date,
+          expenses.filter((e) => e.id !== id),
+        ])
+      );
+      return { expenses: updatedExpenses, expensesByDate: updatedByDate };
+    }),
 }));

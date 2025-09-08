@@ -6,7 +6,7 @@ interface DateArrStore {
 }
 
 export const useDateArrStore = create<DateArrStore>((set) => ({
-  dateArr: ["全てのデータ"],
+  dateArr: [],
   addDate: (date) => {
     set((state) =>
       !state.dateArr.includes(date)

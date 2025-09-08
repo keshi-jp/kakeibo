@@ -4,5 +4,5 @@ export interface CategoryType {
     React.SetStateAction<{ id: string; name: string }[]>
   >;
   selectedCategory: string;
-  setSelectedCategory: (value: string) => void;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
 }

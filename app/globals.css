@@ -3,24 +3,60 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --card-background: #ffffff;
+  --card-foreground: #171717;
+  --primary: #2563eb; /* Tailwind's blue-600 */
+  --primary-hover: #1d4ed8; /* Tailwind's blue-700 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --card-background: #1f2937; /* Tailwind's gray-800 */
+    --card-foreground: #e5e7eb; /* Tailwind's gray-200 */
+    --primary: #3b82f6; /* Tailwind's blue-500 */
+    --primary-hover: #2563eb; /* Tailwind's blue-600 */
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Noto Sans JP", Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  .card {
+    @apply bg-[var(--card-background)] text-[var(--card-foreground)] shadow-xl rounded-xl p-8 max-w-md w-full;
+  }
+
+  .input-common {
+    @apply border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all w-full;
+  }
+
+  .btn-primary {
+    @apply bg-[var(--primary)] text-white font-semibold rounded-lg py-3 px-6 hover:bg-[var(--primary-hover)] transition-all duration-200 shadow-md;
+  }
+
+  .btn-delete {
+    @apply p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition-all duration-200;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  @layer components {
+    .input-common {
+      @apply border-gray-600 bg-gray-700 text-[var(--foreground)] focus:ring-[var(--primary)];
+    }
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in-out;
 }

@@ -2,7 +2,8 @@
 
 import { CategoryType } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ArrowLeftIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 type SettingProps = Pick<CategoryType, "categories" | "setCategories"> & {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
@@ -16,14 +17,12 @@ export default function Setting({
   const [newCategory, setNewCategory] = useState("");
   const [isCategory, setIsCategory] = useState<boolean>(true);
 
-  const filteredCategories = categories.filter((cat) => cat.name !== "設定");
 
   const handleAddClick = () => {
     if (!newCategory.trim()) return;
     setCategories([
-      ...categories.slice(0, -1),
-      { id: uuidv4(), name: newCategory },
-      { id: "setting", name: "設定" },
+      ...categories,
+      { id: uuidv4(), name: newCategory }
     ]);
     setNewCategory("");
   };
@@ -33,59 +32,77 @@ export default function Setting({
   };
 
   const handleBackClick = () => {
-    if (categories.length === 1) {
+    if (categories.length === 0) {
       setIsCategory(false);
+    } else {
+      setSelectedCategory(categories[0].name);
     }
-    setSelectedCategory(categories[0].name);
   };
 
-  return (
-    <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">カテゴリー設定</h1>
+  useEffect(() => {
+    if (categories.length > 0) {
+      setIsCategory(true);
+    }
+  }, [categories])
 
-      <ul className="space-y-2 mb-4">
-        {filteredCategories.map((cat) => (
+  return (
+    <div className="card p-6 mx-auto">
+      <h1 className="text-2xl font-bold mb-6 text-center text-[var(--foreground)]">
+        カテゴリー設定
+      </h1>
+
+      <ul className="space-y-3 mb-6">
+        {categories.map((cat) => (
           <li
             key={cat.id}
-            className="flex justify-between items-center bg-gradient-to-r from-indigo-100 to-indigo-200 dark:from-gray-700 dark:to-gray-800 shadow-md rounded-2xl p-3 hover:scale-105 transition-transform duration-200"
+            className="card p-4 flex justify-between items-center transition-all duration-200 hover:shadow-lg animate-fade-in"
           >
-            <span className="font-medium text-gray-800 dark:text-gray-100">
+            <span className="font-medium text-[var(--card-foreground)]">
               {cat.name}
             </span>
             <button
               onClick={() => handleDeleteClick(cat.id)}
-              className="px-3 py-1 rounded-xl bg-red-500 text-white hover:bg-red-600 transition-colors"
+              className="btn-delete"
+              aria-label={`カテゴリー「${cat.name}」を削除`}
             >
-              削除
+              <TrashIcon className="h-5 w-5 text-red-500 dark:text-red-400" />
             </button>
           </li>
         ))}
       </ul>
 
-      <div className="flex gap-2 mt-4">
-        <input
-          type="text"
-          placeholder="新しいカテゴリー"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-          className="flex-1 rounded-full border px-4 py-2 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-        />
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="relative flex-1">
+          <PlusIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-300" />
+          <input
+            type="text"
+            placeholder="新しいカテゴリー（例：日用品）"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+            className="input-common pl-10"
+            aria-label="新しいカテゴリー入力"
+          />
+        </div>
         <button
           onClick={handleAddClick}
-          className="rounded-full px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold shadow-md hover:scale-105 transition-transform"
+          className="btn-primary flex items-center justify-center gap-2"
+          aria-label="カテゴリーを追加"
         >
+          <PlusIcon className="h-5 w-5" />
           追加
         </button>
       </div>
 
       <button
         onClick={handleBackClick}
-        className="mt-6 text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+        className="text-[var(--primary)] hover:text-[var(--primary-hover)] flex items-center gap-2 transition-colors"
+        aria-label="家計簿画面に戻る"
       >
-        ← 戻る
+        <ArrowLeftIcon className="h-5 w-5" />
+        戻る
       </button>
       {!isCategory && (
-        <p className="mt-6 text-center text-gray-500 dark:text-gray-400">
+        <p className="mt-6 text-center text-gray-500 dark:text-gray-400 animate-fade-in">
           カテゴリーがありません。
         </p>
       )}
